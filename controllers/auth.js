@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
-const key = "f8576fd41fbda5641c6ee6b46778a82e3bca8ac55e9d10a2563f0316e88b8d40";
-
 // Register a new user
 const register = async (req, res, next) => {
     const { Nickname, Email, Password, Level, HighScore } = req.body;
@@ -35,7 +33,7 @@ const login = async (req, res, next) => {
         return res.status(401).json({ message: 'Incorrect password' });
       }
   
-      const token = jwt.sign({ userId: user._id }, key, {
+      const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
         expiresIn: '1 hour'
       });
       res.json({ token });
