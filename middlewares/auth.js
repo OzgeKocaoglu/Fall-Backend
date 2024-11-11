@@ -5,7 +5,6 @@ const authenticate = async (req, res, next) => {
 
   const token = req.headers.authorization?.split(' ')[0];
 
-  
   if (!token) {
     return res.status(401).json({ message: 'Authentication required' });
   }
@@ -13,6 +12,8 @@ const authenticate = async (req, res, next) => {
   try {
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
     const user = await User.findById(decodedToken.userId);
+
+    console.log("Auth:: User:: " + user);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
