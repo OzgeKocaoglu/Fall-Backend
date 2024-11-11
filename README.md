@@ -13,14 +13,12 @@ The Fall backend serves as the core infrastructure of the game, managing player 
 - **Node.js & Express.js:** For building a high-performance, scalable API.
 - **MongoDB:** NoSQL database used to store player and game data, ensuring flexible data management.
 - **Docker:** Containerizes the application for easier deployment and scalability.
-- **AWS:** Supports deployment on AWS ECS or Elastic Beanstalk for easy scaling and management.
 
 ### Getting Started
 
 #### Prerequisites
 - **Node.js** (v14+)
 - **Docker and Docker Compose**
-- **AWS** CLI (for deployment on AWS)
 
 
 #### Installation
@@ -55,20 +53,16 @@ The API will be running at http://localhost:3000.
 
 1. Build the Docker image:
 ```
-docker build -t fall-game-backend .
+docker build -t fall-api .
 ```
 
 2. Run the Docker container:
 ```
-docker run -d -p 3000:3000 --env-file .env fall-game-backend
+docker run -d -p 3000:3000 --env-file .env fall-api
 ```
 
 Your containerized API should now be accessible on http://localhost:3000.
 
-#### AWS Deployment
-
-1. **ECR (Elastic Container Registry):** Create a repository in ECR, push the Docker image, and follow AWS instructions for ECS/Elastic Beanstalk setup.
-2. **ECS/Elastic Beanstalk:** Configure ECS task definitions or upload your Docker image to Elastic Beanstalk for deployment.
 
 ### API Endpoints
 
