@@ -1,5 +1,6 @@
 const express = require('express');
 const { authenticate } = require('../middlewares/auth');
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
 const router = express.Router();
@@ -73,11 +74,11 @@ router.put('/change-password', authenticate, async (req, res) => {
       return res.status(404).json({ error: "Player not found." });
     }
 
-    const passwordMatch = await player.comparePassword(req.body.CurrentPassword);
-    if (!passwordMatch) {
-      return res.status(400).json({ error: "Password wrong." });
-    }
+    const passwordMatch = await bcrypt.compare(CurrentPassword, player.Password);
 
+    if (!passwordMatch) {
+      return res.status(401).json({ message: 'Incorrect password' });
+    }
 
     player.Password = NewPassword;
     await player.save();

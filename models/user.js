@@ -29,7 +29,7 @@ userSchema.pre('save', async function (next) {
     if (!user.isModified('Password')) return next();
   
     try {
-    //   user.Password = await bcrypt.hash(user.Password, 10);
+      user.Password = await bcrypt.hash(user.Password, 10);
       next();
     } catch (error) {
       return next(error);

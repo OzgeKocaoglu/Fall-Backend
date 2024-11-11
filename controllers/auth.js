@@ -25,9 +25,8 @@ const login = async (req, res, next) => {
         return res.status(404).json({ message: 'User not found' });
       }
   
-    // console.log(user.Password);
-    // const hashedPassword = await bcrypt.hash(req.body.Password, 10);
-      const passwordMatch = await user.comparePassword(req.body.Password);
+      // const hashedPassword = await bcrypt.hash(Password, 10);
+      const passwordMatch = await bcrypt.compare(Password, user.Password);
 
       if (!passwordMatch) {
         return res.status(401).json({ message: 'Incorrect password' });
