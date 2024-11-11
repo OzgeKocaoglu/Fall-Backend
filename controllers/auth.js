@@ -2,18 +2,35 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
+const validateEmail = (email) => {
+  const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  return regex.test(email);
+};
+
 // Register a new user
 const register = async (req, res, next) => {
-    const { Nickname, Email, Password, Level, HighScore } = req.body;
+
+  const { Nickname, Email, Password, Level, HighScore } = req.body;
+
+  if (!validateEmail(Email)) {
+    return res.status(400).json({ message: Email + 'is not valid.' });
+  }
+
+  const existingUser = await User.findOne({ Nickname });
+  const existingEmail = await User.findOne({ Email });
+
+  if (existingUser || existingEmail) {
+    return res.status(400).json({ message: Nickname + ' or ' + Email + ' is already taken.' });
+  }
   
-    try {
-      const user = new User({ Nickname, Email, Password, Level, HighScore });
-      await user.save();
-      res.json({ message: 'Registration successful' });
-    } catch (error) {
-      next(error);
-    }
-  };
+  try {
+    const user = new User({ Nickname, Email, Password, Level, HighScore });
+    await user.save();
+    res.json({ message: 'Registration successful' });
+  } catch (error) {
+    next(error);
+  }
+};
 
   // Login with an existing user
 const login = async (req, res, next) => {
